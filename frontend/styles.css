@@ -1,0 +1,217 @@
+/* Basic styling file for the JSON to SQL app (frontend/styles.css) */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --accent1: #667eea;
+    --accent2: #764ba2;
+}
+
+body {
+    font-family: Inter, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    min-height: 100vh;
+    color: #111;
+}
+
+.app {
+    max-width: 1100px;
+    margin: 28px auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 18px 40px rgba(6, 12, 34, 0.15);
+    overflow: hidden;
+}
+
+header {
+    padding: 18px 24px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.03), transparent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+header h1 {
+    color: #fff;
+    font-size: 18px;
+}
+
+main {
+    padding: 18px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 12px;
+    border: 1px solid #eef2ff;
+}
+
+.step-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radio-row {
+    display: flex;
+    gap: 8px;
+}
+
+.radio-option {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #eef2ff;
+    cursor: pointer;
+}
+
+.radio-option.active {
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    color: #fff;
+    border-color: transparent;
+}
+
+textarea {
+    width: 100%;
+    min-height: 220px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #eef2ff;
+    font-family: monospace;
+}
+
+.controls {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.btn {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    color: #fff;
+}
+
+.btn-ghost {
+    background: transparent;
+    border: 1px solid #e6e9f8;
+}
+
+.schema-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+}
+
+.info-card {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #f3f6ff;
+}
+
+.table-visualization {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.table-container {
+    border: 1px solid #edf2ff;
+    border-radius: 8px;
+    overflow: auto;
+}
+
+.table-header {
+    padding: 8px;
+    background: #fafcff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.table-scroll {
+    max-height: 360px;
+    overflow: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #f1f5ff;
+    text-align: left;
+    font-size: 13px;
+}
+
+.data-table thead th {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    font-weight: 700;
+}
+
+.code-block {
+    background: #0b1220;
+    color: #e6eef8;
+    padding: 12px;
+    border-radius: 6px;
+    overflow: auto;
+}
+
+.form-row {
+    display: flex;
+    gap: 8px;
+}
+
+.form-col {
+    flex: 1;
+}
+
+.muted {
+    color: #667;
+    font-size: 13px;
+}
+
+.success {
+    color: #0b9;
+}
+
+.error {
+    color: #d33;
+}
+
+@media (max-width: 760px) {
+    .form-row {
+        flex-direction: column;
+    }
+}

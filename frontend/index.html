@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JSON → SQL Converter — V2</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>JSON → SQL Converter — V2</h1>
+      <div class="version">JSON → SQL Converter</div>
+    </header>
+
+    <main>
+      <!-- Step 1 -->
+      <section id="step1" class="card">
+        <div class="step-head"><div class="step-num">1</div><div><strong>Input</strong></div></div>
+        <div class="radio-row">
+          <div id="opt-paste" class="radio-option active" data-input="paste">Paste JSON</div>
+          <div id="opt-api"   class="radio-option" data-input="api">API URL</div>
+        </div>
+      </section>
+
+      <!-- Step 2 -->
+      <section id="step2" class="card">
+        <div class="step-head"><div class="step-num">2</div><div><strong>Provide JSON or API Endpoint</strong></div></div>
+
+        <div id="paste-area">
+          <label for="json-input">JSON</label>
+          <textarea id="json-input" placeholder='Paste JSON here...'></textarea>
+          <div class="controls">
+            <button id="analyze-btn" class="btn btn-primary" disabled>Analyze JSON</button>
+            <button id="clear-btn" class="btn btn-ghost">Clear</button>
+          </div>
+        </div>
+
+        <div id="api-area" style="display:none">
+          <label for="api-url">API Endpoint</label>
+          <div class="api-row">
+            <input id="api-url" class="api-input" placeholder="https://api.example.com/data" />
+            <select id="api-auth-type" class="api-select">
+              <option value="none">No Auth</option>
+              <option value="token">Bearer Token</option>
+              <option value="aad">Azure AD</option>
+            </select>
+            <button id="fetch-api-btn" class="btn btn-primary">Fetch</button>
+          </div>
+
+          <div id="token-row" style="display:none">
+            <label>Bearer Token</label>
+            <input id="bearer-token" class="api-input" placeholder="Paste bearer token"/>
+          </div>
+
+          <div id="aad-row" style="display:none">
+            <label>Azure AD</label>
+            <div class="muted">Choose an AAD option below and follow the flow.</div>
+            <div style="margin-top:8px;display:flex;gap:8px">
+              <button id="aad-auth-code" class="btn btn-ghost">Sign-in (Auth Code)</button>
+              <button id="aad-device" class="btn btn-ghost">Device Code</button>
+              <button id="aad-paste-token" class="btn btn-ghost">Paste Token</button>
+            </div>
+            <div style="margin-top:8px">
+              <input id="aad-pasted-token" class="api-input" placeholder="Paste access_token (optional)"/>
+            </div>
+          </div>
+
+          <div id="api-status"></div>
+        </div>
+      </section>
+
+      <!-- Step 3 -->
+      <section id="step3" class="card" style="display:none">
+        <div class="step-head"><div class="step-num">3</div><div><strong>Schema Analysis</strong></div></div>
+        <div id="schema-info" class="schema-grid"></div>
+      </section>
+
+      <!-- Step 4 -->
+      <section id="step4" class="card" style="display:none">
+        <div class="step-head"><div class="step-num">4</div><div><strong>Data Preview</strong></div></div>
+        <div id="table-visualization" class="table-visualization"></div>
+      </section>
+
+      <!-- Step 5 -->
+      <section id="step5" class="card" style="display:none">
+        <div class="step-head"><div class="step-num">5</div><div><strong>Generate or Store</strong></div></div>
+
+        <div>
+          <label><input type="radio" name="mode" value="generate" checked/> Generate SQL</label>
+          <label><input type="radio" name="mode" value="store" /> Store in DB</label>
+        </div>
+
+        <div id="generate-panel">
+          <div class="row">
+            <label>Dialect</label>
+            <select id="sql-dialect"><option>postgresql</option><option>mysql</option><option>sqlite</option></select>
+            <button id="generate-sql-btn" class="btn btn-primary">Generate</button>
+            <button id="download-sql-btn" class="btn btn-ghost">Download</button>
+          </div>
+          <label>CREATE</label>
+          <pre id="create-sql" class="code-block">--</pre>
+          <label>INSERT</label>
+          <pre id="insert-sql" class="code-block">--</pre>
+        </div>
+
+        <div id="store-panel" style="display:none">
+          <div class="muted">This action requires a backend. Enter DB details below (backend runs SQL).</div>
+          <div class="form-row">
+            <div class="form-col">
+              <label>Dialect</label>
+              <select id="db-dialect"><option>postgresql</option><option>mysql</option><option>mssql</option><option>sqlite</option></select>
+            </div>
+            <div class="form-col">
+              <label>Host</label>
+              <input id="db-host" placeholder="host"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-col"><label>Port</label><input id="db-port" /></div>
+            <div class="form-col"><label>Database</label><input id="db-name" /></div>
+          </div>
+          <div class="form-row">
+            <div class="form-col"><label>User</label><input id="db-user" /></div>
+            <div class="form-col"><label>Password</label><input id="db-pass" type="password"/></div>
+          </div>
+          <div style="margin-top:8px">
+            <button id="test-conn-btn" class="btn btn-primary">Test Connection</button>
+            <button id="store-db-btn" class="btn btn-primary">Create Schema & Store Data</button>
+            <div id="db-conn-status"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 6 -->
+      <section id="step6" class="card" style="display:none">
+        <div class="step-head"><div class="step-num">6</div><div><strong>Insert Data</strong></div></div>
+        <div id="insert-controls"></div>
+        <div style="margin-top:12px">
+          <button id="execute-insert-btn" class="btn btn-primary">Execute Insert</button>
+          <button id="download-csv-btn" class="btn btn-ghost">Download CSVs</button>
+        </div>
+        <div id="insert-status"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
